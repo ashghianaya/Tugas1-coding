@@ -11,11 +11,6 @@ const navLinks = [
   { label: 'Kontak', href: '#contact' },
 ]
 
-const heroHighlights = [
-  { label: 'Coursework Builds', value: '08' },
-  { label: 'UI Experiments', value: '14' },
-  { label: 'Team Projects', value: '05' },
-]
 
 const strengths = [
   {
@@ -118,7 +113,7 @@ const achievements = [
     year: "2025",
     title: "Sertifikat Tahfiz 11 juz",
     // GANTI DENGAN PATH GAMBAR KAMU
-    image: "/src/assets/sertif.png",
+    image: "/sertif.png",
     text: "Penghargaan atas kemampuan komunikasi persuasif dan kepemimpinan dalam forum siswa internasional.",
   }
 ];
@@ -128,16 +123,19 @@ const socialLinks = [
     label: "GitHub",
     handle: "@ashghianaya",
     href: "https://github.com/ashghianaya",
+    target: "_blank",
   },
   {
     label: "LinkedIn",
     handle: "/in/Kanaya-Ashghia-Rizwar",
     href: "https://linkedin.com",
+    target: "_blank",
   },
   {
     label: "Email",
     handle: "ashghianaya0412@gmail.com",
     href: "mailto:ashghianaya0412@gmail.com",
+    target: "_blank",
   },
 ];
 
@@ -216,6 +214,8 @@ function MoonIcon() {
 function App() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme)
   const [themeSource, setThemeSource] = useState<ThemeSource>(getInitialThemeSource)
+
+  const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
@@ -379,24 +379,6 @@ function App() {
               <a className="button button-secondary" href="#about">
                 Tentang Saya
               </a>
-            </div>
-
-            <div className="hero-highlights" aria-label="Highlights">
-              {heroHighlights.map((item, index) => (
-                <div
-                  key={item.label}
-                  className="highlight-card"
-                  data-reveal
-                  style={
-                    {
-                      "--reveal-delay": `${220 + index * 90}ms`,
-                    } as CSSProperties
-                  }
-                >
-                  <strong>{item.value}</strong>
-                  <span>{item.label}</span>
-                </div>
-              ))}
             </div>
           </div>
 
@@ -607,8 +589,6 @@ function App() {
                       <span key={item}>{item}</span>
                     ))}
                   </div>
-
-                 
                 </div>
               </article>
             ))}
@@ -618,35 +598,59 @@ function App() {
         <section className="section" id="achievements">
           <SectionHeading
             eyebrow="Prestasi & Sertifikasi"
-            title="Bukti konsistensi, pengembangan diri, dan dedikasi akademik."
-            description="Sertifikat penghargaan, hasil studi Pre-International, dan pengalaman kolaboratif ini menjadi bukti nyata bahwa setiap kompetensi yang saya miliki didasarkan pada proses belajar yang sungguh-sungguh."
+            title="Bukti konsistensi dan dedikasi akademik."
+            description="Klik pada judul sertifikat untuk melihat detail penghargaan."
           />
 
           <div className="timeline-grid">
             {achievements.map((achievement, index) => (
               <article
                 key={achievement.title}
-                className="surface-card timeline-card"
-                data-reveal
-                style={
-                  { "--reveal-delay": `${index * 100}ms` } as CSSProperties
+                className={`surface-card timeline-card accordion-item ${activeAccordion === index ? "is-active" : ""}`}
+                onClick={() =>
+                  setActiveAccordion(activeAccordion === index ? null : index)
                 }
+                style={{ cursor: "pointer", transition: "all 0.3s ease" }}
               >
-                {/* BAGIAN GAMBAR BARU */}
-                <div className="timeline-image">
-                  <img
-                    src={achievement.image}
-                    alt={`Sertifikat ${achievement.title}`}
-                    loading="lazy" // Optimasi loading
-                  />
+                <div
+                  className="timeline-header"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <span className="timeline-year">{achievement.year}</span>
+                    <h3 style={{ margin: 0 }}>{achievement.title}</h3>
+                  </div>
+                  <span
+                    style={{
+                      transform:
+                        activeAccordion === index
+                          ? "rotate(180deg)"
+                          : "rotate(0)",
+                    }}
+                  >
+                    ▼
+                  </span>
                 </div>
 
-                {/* BAGIAN KONTEN TEKS */}
-                <div className="timeline-content">
-                  <span className="timeline-year">{achievement.year}</span>
-                  <h3>{achievement.title}</h3>
-                  <p>{achievement.text}</p>
-                </div>
+                {/* Bagian yang akan muncul/sembunyi (Accordion Body) */}
+                {activeAccordion === index && (
+                  <div
+                    className="accordion-content"
+                    style={{
+                      marginTop: "20px",
+                      animation: "slideDown 0.3s ease-out",
+                    }}
+                  >
+                    <div className="timeline-image">
+                      <img src={achievement.image} alt={achievement.title} />
+                    </div>
+                    <p style={{ marginTop: "15px" }}>{achievement.text}</p>
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -700,10 +704,13 @@ function App() {
 
             <form
               className="surface-card contact-form"
-              onSubmit={(event) => event.preventDefault()}
+              action="mailto:ashghianaya0412@gmail.com"
+              method="post"
+              encType="text/plain" // Gunakan encType dengan 'T' kapital untuk React
               data-reveal
               style={{ "--reveal-delay": "180ms" } as CSSProperties}
             >
+              {/* Biarkan input Nama, Email, dan Pesan tetap seperti semula */}
               <label>
                 Nama Lengkap
                 <input
