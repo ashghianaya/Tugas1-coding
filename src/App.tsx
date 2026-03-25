@@ -305,7 +305,7 @@ function App() {
         <div className="brand-lockup">
           <span className="brand-mark">
             <img
-              src="/public/profil.jpeg"
+              src="/profil.jpeg"
               alt="Kanaya Logo"
               className="brand-avatar"
             />
@@ -420,7 +420,7 @@ function App() {
                   {/* Mengganti teks AR dengan tag IMG */}
                   <div className="portrait-core">
                     <img
-                      src="/public/profil.jpeg" // GANTI DENGAN LINK FOTO KAMU
+                      src="/profil.jpeg" // GANTI DENGAN LINK FOTO KAMU
                       alt="Foto Profil AR"
                       className="profile-image"
                     />
